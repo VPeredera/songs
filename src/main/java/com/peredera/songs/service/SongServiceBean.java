@@ -7,10 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -26,7 +24,6 @@ public class SongServiceBean implements SongService {
     public Song createSong(Song song) {
         log.info("createSong() - start: name = {}", song.getName());
         check80sSong(song);
-        song.setDeleted(Boolean.FALSE);
         log.info("createSong() - finish: name = {}", song.getName());
         return songRepository.save(song);
     }

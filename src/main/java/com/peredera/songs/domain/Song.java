@@ -1,16 +1,20 @@
 package com.peredera.songs.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
 @Table(name = "songs")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Song {
 
     @Id
@@ -23,7 +27,7 @@ public class Song {
     private Integer songLength;
 
     @JsonIgnore
-    private Boolean isDeleted;
+    private Boolean isDeleted = Boolean.FALSE;
 
     public Long getId() {
         return id;
