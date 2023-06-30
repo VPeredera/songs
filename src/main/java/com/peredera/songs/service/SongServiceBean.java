@@ -2,7 +2,8 @@ package com.peredera.songs.service;
 
 import com.peredera.songs.domain.Song;
 import com.peredera.songs.repository.SongRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.peredera.songs.util.exception.ResourceNotFoundException;
+import com.peredera.songs.util.exception.ResourceWasDeletedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class SongServiceBean implements SongService {
     @Override
     public Song findSongById(Long id) {
         log.info("findSongById(): id = {}", id);
-        return checkSong(id);
+        return checkIfSongIsDeleted(getSongById(id));
     }
 
     @Override
@@ -55,34 +56,27 @@ public class SongServiceBean implements SongService {
     @Override
     public Song updateSong(Long id, Song song) {
         log.info("updateSong() - start: id = {}, songName = {}", id, song.getName());
+        log.debug("updateSong() -> check80sSong(): name = {}", song.getName());
         check80sSong(song);
         log.info("updateSong() - finish: id = {}, songName = {}", id, song.getName());
-        return songRepository.findById(id)
-                .map(entity -> {
-                    entity.setName(song.getName());
-                    entity.setSinger(song.getSinger());
-                    entity.setGroupName(song.getGroupName());
-                    entity.setReleaseDate(song.getReleaseDate());
-                    entity.setSongLength(song.getSongLength());
-                    entity.setDeleted(song.getDeleted());
-                    return songRepository.save(entity);
-                })
-                .orElseThrow(() -> new EntityNotFoundException("Song not found with id " + id));
+        return songRepository.save(updateSong(getSongById(id), song));
     }
 
     @Override
     public Song updateReleaseDate(Long id, LocalDate releaseDate) {
         log.info("findSongByName() - start: id = {}, releaseDate={}", id, releaseDate);
-        checkSong(id);
+        log.debug("updateReleaseDate() -> checkSong(): id = {}", id);
+        getSongById(id);
         songRepository.updateReleaseDate(id, releaseDate);
         log.info("findSongByName() - finish: id = {}, releaseDate={}", id, findSongById(id).getReleaseDate());
-        return checkSong(id);
+        return getSongById(id);
     }
 
     @Override
     public void deleteSong(Long id) {
         log.info("deleteSong(): id = {}", id);
-        Song song = checkSong(id);
+        log.debug("deleteSong() -> checkSong(): id = {}", id);
+        Song song = checkIfSongIsDeleted(getSongById(id));
         songRepository.deleteSong(song.getId());
     }
 
@@ -93,8 +87,23 @@ public class SongServiceBean implements SongService {
         }
     }
 
-    private Song checkSong(Long id) {
+    private Song getSongById(Long id) {
         return songRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Song not found with id " + id));
+                .orElseThrow(ResourceNotFoundException::new);
+    }
+
+    private Song checkIfSongIsDeleted(Song song) {
+        if(song.getDeleted()) throw new ResourceWasDeletedException();
+        return song;
+    }
+
+    private Song updateSong(Song initial, Song updated) {
+        initial.setName(updated.getName());
+        initial.setSinger(updated.getSinger());
+        initial.setGroupName(updated.getGroupName());
+        initial.setReleaseDate(updated.getReleaseDate());
+        initial.setSongLength(updated.getSongLength());
+        initial.setDeleted(updated.getDeleted());
+        return initial;
     }
 }

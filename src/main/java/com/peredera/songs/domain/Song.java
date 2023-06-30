@@ -5,77 +5,42 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Entity
 @Table(name = "songs")
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Song {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
+
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
+
+    @Column(name = "singer", nullable = false, length = 50)
     private String singer;
+
+    @Column(name = "group_name", length = 100)
     private String groupName;
+
+    @Column(name = "release_date")
     private LocalDate releaseDate;
+
+    @Column(name = "song_length")
     private Integer songLength;
 
     @JsonIgnore
+    @Column(name = "is_deleted")
     private Boolean isDeleted = Boolean.FALSE;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSinger() {
-        return singer;
-    }
-
-    public void setSinger(String singer) {
-        this.singer = singer;
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-
-    public LocalDate getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(LocalDate releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
-    public Integer getSongLength() {
-        return songLength;
-    }
-
-    public void setSongLength(Integer songLength) {
-        this.songLength = songLength;
-    }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public Boolean getDeleted() {
@@ -86,18 +51,4 @@ public class Song {
         this.isDeleted = isDeleted;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Song song = (Song) o;
-        return id.equals(song.id) && name.equals(song.name) && singer.equals(song.singer) &&
-                groupName.equals(song.groupName) && releaseDate.equals(song.releaseDate) &&
-                songLength.equals(song.songLength) && isDeleted.equals(song.isDeleted);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, singer, groupName, releaseDate, songLength, isDeleted);
-    }
 }
