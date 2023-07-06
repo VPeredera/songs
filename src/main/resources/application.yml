@@ -26,4 +26,4 @@ logging:
   level:
     org.springframework: info
     org.hibernate: info
-    com.peredera.songs: debug
+    com.peredera.songs: info

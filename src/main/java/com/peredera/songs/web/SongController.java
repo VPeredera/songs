@@ -1,11 +1,27 @@
 package com.peredera.songs.web;
 
 import com.peredera.songs.domain.Song;
+import com.peredera.songs.dto.SongCreateDto;
+import com.peredera.songs.dto.SongDto;
+import com.peredera.songs.dto.SongInfoDto;
+import com.peredera.songs.dto.SongUpdateDto;
 import com.peredera.songs.service.SongServiceBean;
+import com.peredera.songs.util.config.SongConverter;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -17,51 +33,55 @@ import java.util.Optional;
 public class SongController {
 
     private final SongServiceBean songServiceBean;
+    private final SongConverter songConverter;
 
-    public SongController(SongServiceBean songServiceBean) {
+    public SongController(SongServiceBean songServiceBean, SongConverter songConverter) {
         this.songServiceBean = songServiceBean;
+        this.songConverter = songConverter;
     }
 
     @PostMapping(value = "")
     @ResponseStatus(HttpStatus.CREATED)
-    public Optional<Song> createSong(@RequestBody Song song) {
-        log.debug("createSong(): song = {}", song);
-        return Optional.ofNullable(songServiceBean.createSong(song));
+    public SongCreateDto createSong(@Valid @RequestBody SongCreateDto request) {
+        log.debug("createSong(): song = {}", request);
+        Song entity = songConverter.fromCreateDto(request);
+        return songConverter.toCreateDto(songServiceBean.createSong(entity));
     }
 
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<Song> findSongById(@PathVariable("id") Long id) {
+    public SongDto findSongById(@PathVariable("id") Long id) {
         log.debug("findSongById(): id = {}", id);
-        return Optional.ofNullable(songServiceBean.findSongById(id));
+        return songConverter.toDto(songServiceBean.findSongById(id));
     }
 
     @GetMapping(value = "", params = {"name"})
     @ResponseStatus(HttpStatus.OK)
-    public Collection<Song> findSongByName(@RequestParam String name) {
+    public Collection<SongInfoDto> findSongByName(@RequestParam String name) {
         log.debug("findSongByName(): name = {}", name);
-        return songServiceBean.findSongByName(name);
+        return songServiceBean.findSongByName(name).stream().map(songConverter::toInfoDto).toList();
     }
 
     @GetMapping(value = "", params = {"isDeleted"})
     @ResponseStatus(HttpStatus.OK)
-    public Collection<Song> findSongByDeletedIs(@RequestParam Boolean isDeleted) {
+    public Collection<SongDto> findSongByDeletedIs(@RequestParam Boolean isDeleted) {
         log.debug("findSongByDeletedIs(): isDeleted = {}", isDeleted);
-        return songServiceBean.findSongByIsDeleted(isDeleted);
+        return songServiceBean.findSongByIsDeleted(isDeleted).stream().map(songConverter::toDto).toList();
     }
 
     @GetMapping(value = "")
     @ResponseStatus(HttpStatus.OK)
-    public Collection<Song> findAllSongs() {
+    public Collection<SongInfoDto> findAllSongs() {
         log.debug("findAllSongs()");
-        return songServiceBean.findAllSongs();
+        return songServiceBean.findAllSongs().stream().map(songConverter::toInfoDto).toList();
     }
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<Song> updateSong(@PathVariable Long id, @RequestBody Song song) {
-        log.debug("updateSong(): id = {}, song = {}", id, song);
-        return Optional.ofNullable(songServiceBean.updateSong(id, song));
+    public SongUpdateDto updateSong(@PathVariable Long id, @Valid @RequestBody SongUpdateDto request) {
+        log.debug("updateSong(): id = {}, song = {}", id, request);
+        Song entity = songConverter.fromUpdateDto(request);
+        return songConverter.toUpdateDto(songServiceBean.updateSong(id, entity));
     }
 
     @PatchMapping(value = "/{id}", params = {"releaseDate"})

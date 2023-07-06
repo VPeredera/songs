@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
+import static java.util.function.Predicate.not;
 
 @Service
 @Slf4j
@@ -38,7 +39,7 @@ public class SongServiceBean implements SongService {
     @Override
     public List<Song> findSongByName(String name) {
         log.info("findSongByName(): name = {}", name);
-        return songRepository.findByName(name);
+        return songRepository.findByName(name).stream().filter(not(Song::getIsDeleted)).toList();
     }
 
     @Override
@@ -50,7 +51,7 @@ public class SongServiceBean implements SongService {
     @Override
     public List<Song> findAllSongs() {
         log.info("findAllSongs()");
-        return songRepository.findAll();
+        return songRepository.findAll().stream().filter(not(Song::getIsDeleted)).toList();
     }
 
     @Override
@@ -93,7 +94,7 @@ public class SongServiceBean implements SongService {
     }
 
     private Song checkIfSongIsDeleted(Song song) {
-        if(song.getDeleted()) throw new ResourceWasDeletedException();
+        if(song.getIsDeleted()) throw new ResourceWasDeletedException();
         return song;
     }
 
@@ -103,7 +104,7 @@ public class SongServiceBean implements SongService {
         initial.setGroupName(updated.getGroupName());
         initial.setReleaseDate(updated.getReleaseDate());
         initial.setSongLength(updated.getSongLength());
-        initial.setDeleted(updated.getDeleted());
+        initial.setIsDeleted(updated.getIsDeleted());
         return initial;
     }
 }

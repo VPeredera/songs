@@ -1,8 +1,11 @@
 package com.peredera.songs.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,17 +41,6 @@ public class Song {
     @Column(name = "song_length")
     private Integer songLength;
 
-    @JsonIgnore
     @Column(name = "is_deleted")
     private Boolean isDeleted = Boolean.FALSE;
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    public Boolean getDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(Boolean isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
 }

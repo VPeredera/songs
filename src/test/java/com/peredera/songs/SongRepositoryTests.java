@@ -67,7 +67,7 @@ public class SongRepositoryTests {
         repository.deleteSong(song.getId());
 
         Song songDeleted = repository.findById(song.getId()).orElseThrow();
-        Assertions.assertThat(songDeleted.getDeleted()).isTrue();
+        Assertions.assertThat(songDeleted.getIsDeleted()).isTrue();
     }
 
     @Test
@@ -75,7 +75,7 @@ public class SongRepositoryTests {
     public void findByIsDeletedTest() {
         List<Song> songs = repository.findByIsDeleted(Boolean.TRUE);
 
-        Assertions.assertThat(songs).allMatch(s -> s.getDeleted().equals(Boolean.TRUE));
+        Assertions.assertThat(songs).allMatch(s -> s.getIsDeleted().equals(Boolean.TRUE));
     }
 
     @Test

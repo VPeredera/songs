@@ -54,7 +54,7 @@ class SongServiceBeanTests {
     @Test
     @DisplayName("findSongById")
     void whenGivenId_shouldReturnSong_ifFound() {
-        Song song = Song.builder().id(1L).build();
+        Song song = Song.builder().id(1L).isDeleted(false).build();
 
         when(repository.findById(any(Long.class))).thenReturn(Optional.of(song));
 
@@ -101,7 +101,7 @@ class SongServiceBeanTests {
         List<Song> expected = service.findSongByIsDeleted(Boolean.TRUE);
 
         assertThat(expected).isEqualTo(songs);
-        assertThat(expected).allMatch(s -> s.getDeleted().equals(Boolean.TRUE));
+        assertThat(expected).allMatch(s -> s.getIsDeleted().equals(Boolean.TRUE));
         verify(repository).findByIsDeleted(Boolean.TRUE);
     }
 
@@ -159,7 +159,7 @@ class SongServiceBeanTests {
     @Test
     @DisplayName("updateReleaseDate")
     void whenGivenNewIdAndReleaseDate_shouldReturnUpdatedSong() {
-        Song song = Song.builder().id(1L).releaseDate(LocalDate.parse("2020-01-01")).build();
+        Song song = Song.builder().id(1L).releaseDate(LocalDate.parse("2020-01-01")).isDeleted(Boolean.FALSE).build();
 
         when(repository.findById(any(Long.class))).thenReturn(Optional.of(song));
         doAnswer( arg -> {
