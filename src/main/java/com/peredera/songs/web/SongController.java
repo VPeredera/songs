@@ -6,7 +6,7 @@ import com.peredera.songs.dto.SongDto;
 import com.peredera.songs.dto.SongInfoDto;
 import com.peredera.songs.dto.SongUpdateDto;
 import com.peredera.songs.service.SongServiceBean;
-import com.peredera.songs.util.config.SongConverter;
+import com.peredera.songs.util.config.SongMapperImpl;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -33,55 +33,54 @@ import java.util.Optional;
 public class SongController {
 
     private final SongServiceBean songServiceBean;
-    private final SongConverter songConverter;
+    private final SongMapperImpl songMapper;
 
-    public SongController(SongServiceBean songServiceBean, SongConverter songConverter) {
+    public SongController(SongServiceBean songServiceBean, SongMapperImpl songMapper) {
         this.songServiceBean = songServiceBean;
-        this.songConverter = songConverter;
+        this.songMapper = songMapper;
     }
-
     @PostMapping(value = "")
     @ResponseStatus(HttpStatus.CREATED)
     public SongCreateDto createSong(@Valid @RequestBody SongCreateDto request) {
         log.debug("createSong(): song = {}", request);
-        Song entity = songConverter.fromCreateDto(request);
-        return songConverter.toCreateDto(songServiceBean.createSong(entity));
+        Song entity = songMapper.fromCreateDto(request);
+        return songMapper.toCreateDto(songServiceBean.createSong(entity));
     }
 
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public SongDto findSongById(@PathVariable("id") Long id) {
         log.debug("findSongById(): id = {}", id);
-        return songConverter.toDto(songServiceBean.findSongById(id));
+        return songMapper.toSongDto(songServiceBean.findSongById(id));
     }
 
     @GetMapping(value = "", params = {"name"})
     @ResponseStatus(HttpStatus.OK)
     public Collection<SongInfoDto> findSongByName(@RequestParam String name) {
         log.debug("findSongByName(): name = {}", name);
-        return songServiceBean.findSongByName(name).stream().map(songConverter::toInfoDto).toList();
+        return songServiceBean.findSongByName(name).stream().map(songMapper::toInfoDto).toList();
     }
 
     @GetMapping(value = "", params = {"isDeleted"})
     @ResponseStatus(HttpStatus.OK)
     public Collection<SongDto> findSongByDeletedIs(@RequestParam Boolean isDeleted) {
         log.debug("findSongByDeletedIs(): isDeleted = {}", isDeleted);
-        return songServiceBean.findSongByIsDeleted(isDeleted).stream().map(songConverter::toDto).toList();
+        return songServiceBean.findSongByIsDeleted(isDeleted).stream().map(songMapper::toSongDto).toList();
     }
 
     @GetMapping(value = "")
     @ResponseStatus(HttpStatus.OK)
     public Collection<SongInfoDto> findAllSongs() {
         log.debug("findAllSongs()");
-        return songServiceBean.findAllSongs().stream().map(songConverter::toInfoDto).toList();
+        return songServiceBean.findAllSongs().stream().map(songMapper::toInfoDto).toList();
     }
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public SongUpdateDto updateSong(@PathVariable Long id, @Valid @RequestBody SongUpdateDto request) {
         log.debug("updateSong(): id = {}, song = {}", id, request);
-        Song entity = songConverter.fromUpdateDto(request);
-        return songConverter.toUpdateDto(songServiceBean.updateSong(id, entity));
+        Song entity = songMapper.fromUpdateDto(request);
+        return songMapper.toUpdateDto(songServiceBean.updateSong(id, entity));
     }
 
     @PatchMapping(value = "/{id}", params = {"releaseDate"})

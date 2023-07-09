@@ -1,9 +1,6 @@
 package com.peredera.songs.dto;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
@@ -17,6 +14,7 @@ public class SongUpdateDto {
     public String singer;
     @Size(max = 100)
     public String group;
+    @PastOrPresent(message = "Song should be released")
     public LocalDate releaseDate;
     @Min(value = 1)
     public Integer length;

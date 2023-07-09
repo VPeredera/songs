@@ -17,7 +17,7 @@ spring:
     generate-ddl: true
 # Server configuration
 server:
-  port: 8888 #set your port
+  port: 8888
 # Logger configuration
 logging:
   pattern:
