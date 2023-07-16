@@ -27,3 +27,9 @@ logging:
     org.springframework: info
     org.hibernate: info
     com.peredera.songs: info
+# Swagger configuration
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs.yaml
