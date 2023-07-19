@@ -7,7 +7,7 @@ public class ErrorDetails {
     private final String message;
     private final String details;
 
-    ErrorDetails(Date timestamp, String message, String details) {
+    public ErrorDetails(Date timestamp, String message, String details) {
         this.timestamp = timestamp;
         this.message = message;
         this.details = details;
