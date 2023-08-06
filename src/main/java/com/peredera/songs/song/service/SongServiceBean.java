@@ -1,7 +1,7 @@
-package com.peredera.songs.service;
+package com.peredera.songs.song.service;
 
-import com.peredera.songs.domain.Song;
-import com.peredera.songs.repository.SongRepository;
+import com.peredera.songs.song.domain.Song;
+import com.peredera.songs.song.repository.SongRepository;
 import com.peredera.songs.util.exception.ResourceNotFoundException;
 import com.peredera.songs.util.exception.ResourceWasDeletedException;
 import lombok.extern.slf4j.Slf4j;

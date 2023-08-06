@@ -1,4 +1,4 @@
-package com.peredera.songs.dto;
+package com.peredera.songs.song.dto;
 
 import java.time.LocalDate;
 

@@ -1,10 +1,10 @@
-package com.peredera.songs.web;
+package com.peredera.songs.song.web;
 
-import com.peredera.songs.domain.Song;
-import com.peredera.songs.dto.SongCreateDto;
-import com.peredera.songs.dto.SongDto;
-import com.peredera.songs.dto.SongInfoDto;
-import com.peredera.songs.dto.SongUpdateDto;
+import com.peredera.songs.song.domain.Song;
+import com.peredera.songs.song.dto.SongCreateDto;
+import com.peredera.songs.song.dto.SongDto;
+import com.peredera.songs.song.dto.SongInfoDto;
+import com.peredera.songs.song.dto.SongUpdateDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

@@ -1,6 +1,6 @@
-package com.peredera.songs.repository;
+package com.peredera.songs.song.repository;
 
-import com.peredera.songs.domain.Song;
+import com.peredera.songs.song.domain.Song;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

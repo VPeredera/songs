@@ -1,12 +1,12 @@
-package com.peredera.songs.web;
+package com.peredera.songs.song.web;
 
-import com.peredera.songs.domain.Song;
-import com.peredera.songs.dto.SongCreateDto;
-import com.peredera.songs.dto.SongDto;
-import com.peredera.songs.dto.SongInfoDto;
-import com.peredera.songs.dto.SongUpdateDto;
-import com.peredera.songs.service.SongServiceBean;
-import com.peredera.songs.util.config.SongMapperImpl;
+import com.peredera.songs.song.domain.Song;
+import com.peredera.songs.song.dto.SongCreateDto;
+import com.peredera.songs.song.dto.SongDto;
+import com.peredera.songs.song.dto.SongInfoDto;
+import com.peredera.songs.song.dto.SongUpdateDto;
+import com.peredera.songs.song.service.SongServiceBean;
+import com.peredera.songs.song.dto.mapper.SongMapperImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;

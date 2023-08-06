@@ -1,8 +1,8 @@
 package com.peredera.songs;
 
-import com.peredera.songs.domain.Song;
-import com.peredera.songs.repository.SongRepository;
-import com.peredera.songs.service.SongServiceBean;
+import com.peredera.songs.song.domain.Song;
+import com.peredera.songs.song.repository.SongRepository;
+import com.peredera.songs.song.service.SongServiceBean;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

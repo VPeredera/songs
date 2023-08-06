@@ -1,10 +1,10 @@
-package com.peredera.songs.util.config;
+package com.peredera.songs.song.dto.mapper;
 
-import com.peredera.songs.domain.Song;
-import com.peredera.songs.dto.SongCreateDto;
-import com.peredera.songs.dto.SongDto;
-import com.peredera.songs.dto.SongInfoDto;
-import com.peredera.songs.dto.SongUpdateDto;
+import com.peredera.songs.song.domain.Song;
+import com.peredera.songs.song.dto.SongCreateDto;
+import com.peredera.songs.song.dto.SongDto;
+import com.peredera.songs.song.dto.SongInfoDto;
+import com.peredera.songs.song.dto.SongUpdateDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

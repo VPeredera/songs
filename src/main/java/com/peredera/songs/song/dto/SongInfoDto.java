@@ -1,4 +1,4 @@
-package com.peredera.songs.dto;
+package com.peredera.songs.song.dto;
 
 public class SongInfoDto {
     public String title;

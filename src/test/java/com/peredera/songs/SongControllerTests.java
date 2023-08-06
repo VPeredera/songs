@@ -1,8 +1,8 @@
 package com.peredera.songs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.peredera.songs.domain.Song;
-import com.peredera.songs.service.SongServiceBean;
+import com.peredera.songs.song.domain.Song;
+import com.peredera.songs.song.service.SongServiceBean;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

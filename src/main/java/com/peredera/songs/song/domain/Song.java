@@ -1,4 +1,4 @@
-package com.peredera.songs.domain;
+package com.peredera.songs.song.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

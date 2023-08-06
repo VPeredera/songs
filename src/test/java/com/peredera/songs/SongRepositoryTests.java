@@ -1,7 +1,7 @@
 package com.peredera.songs;
 
-import com.peredera.songs.domain.Song;
-import com.peredera.songs.repository.SongRepository;
+import com.peredera.songs.song.domain.Song;
+import com.peredera.songs.song.repository.SongRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;

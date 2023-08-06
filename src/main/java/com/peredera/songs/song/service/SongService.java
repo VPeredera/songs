@@ -1,6 +1,6 @@
-package com.peredera.songs.service;
+package com.peredera.songs.song.service;
 
-import com.peredera.songs.domain.Song;
+import com.peredera.songs.song.domain.Song;
 
 import java.time.LocalDate;
 import java.util.List;
