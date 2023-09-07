@@ -1,5 +1,6 @@
 package com.peredera.songs.user.service;
 
+import com.peredera.songs.song.repository.SongRepository;
 import com.peredera.songs.token.Token;
 import com.peredera.songs.token.TokenRepository;
 import com.peredera.songs.token.TokenType;
@@ -16,6 +17,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +25,7 @@ public class UserServiceBean implements UserService {
 
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
+    private final SongRepository songRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -59,6 +62,14 @@ public class UserServiceBean implements UserService {
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
+    }
+
+    @Transactional
+    public User addToFavourite(Long user_id, Long song_id) {
+        var user = userRepository.findById(user_id).orElseThrow();
+        var song = songRepository.findById(song_id).orElseThrow();
+        user.getSongs().add(song);
+        return userRepository.save(user);
     }
 
     private void checkIfUserExist(String email) {

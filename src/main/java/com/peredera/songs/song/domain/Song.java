@@ -1,17 +1,16 @@
 package com.peredera.songs.song.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.peredera.songs.user.domain.User;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "songs")
@@ -43,4 +42,8 @@ public class Song {
 
     @Column(name = "is_deleted")
     private Boolean isDeleted = Boolean.FALSE;
+
+    @ManyToMany(mappedBy = "songs", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<User> users;
 }

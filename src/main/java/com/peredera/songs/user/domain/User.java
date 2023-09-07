@@ -1,5 +1,8 @@
 package com.peredera.songs.user.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.peredera.songs.song.domain.Song;
 import com.peredera.songs.token.Token;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,9 +31,17 @@ public class User implements UserDetails {
     private String lastName;
     private String email;
     private String password;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_song",
+        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "song_id", referencedColumnName = "id"))
+    private List<Song> songs;
+
     @Enumerated(EnumType.STRING)
     private Role role;
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Token> tokens;
 
     @Override
